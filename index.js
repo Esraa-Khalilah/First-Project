@@ -16,5 +16,27 @@ const movie_list =[
 
 app.get ("/films/details/" ,(req,res)=>{
     res.json(movie_list)
-})
+});
 
+app.post ("/films/add" , (req,res)=>{
+    
+    const schema = Joi.object({
+        name: Joi.string().min(6).required(),
+        rate: Joi.number().integer().required(),
+        type: Joi.string().min(2).required()
+    } )
+    const validation = schema.validate (req.body)
+    if (validation.error){
+        res.status(400).json(validation.error.details[0].message)
+        return ;
+    }
+    const film = {
+        id:movie_list.length+1 ,
+        name:req.body.name,
+        rate:req.body.rate,
+        type:req.body.type
+    }
+    movie_list.push(film)
+    res.json(film)
+
+})
