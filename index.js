@@ -4,6 +4,7 @@ const express = require ('express');
 const app = express ();
 app.use(express.json())
 const Joi = require('joi');
+const log = require("./logger")
 
 const port = process.env.port 
 app.listen (port , ()=> console.log(`listening on port ${port}...`))
@@ -69,10 +70,12 @@ app.post ("/films/add" , (req,res)=>{
     app.delete("/film/delete/:id" , (req,res)=>{
         const film= movie_list.find (e=> e.id === parseInt(req.params.id))
         if (!film) res.status(404).json ("not found")
-        res.json(film)
+        res.json( film)
 
         const index = movie_list.indexOf(film)
         movie_list.splice(index , 1)
         res.json(film)
 })
+
+app.use (log);
     
