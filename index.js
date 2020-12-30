@@ -38,5 +38,33 @@ app.post ("/films/add" , (req,res)=>{
     }
     movie_list.push(film)
     res.json(film)
-
 })
+
+
+    app.put ("/films/update/:id" , (req,res)=>{
+        const film = movie_list.find (e=> e.id === parseInt(req.params.id))
+        if (!film) res.status(404).json ("not found")
+        res.json(film)
+    
+    const schema = Joi.object({
+        name: Joi.string().min(6).required(),
+        rate: Joi.number().integer().required(),
+         type: Joi.string().min(2).required()
+
+         
+    } )
+     const validation = schema.validate (req.body )
+        if (validation.error){
+        res.status(400).json(validation.error.details[0].message)
+        return ;
+        }  
+
+        film.name =req.body.name,
+        film.rate =req.body.rate,
+        film.type =req.body.type;
+        res.json(movie_list)
+    })
+
+
+    
+    
