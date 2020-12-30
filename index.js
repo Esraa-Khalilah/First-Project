@@ -66,5 +66,13 @@ app.post ("/films/add" , (req,res)=>{
     })
 
 
-    
+    app.delete("/film/delete/:id" , (req,res)=>{
+        const film= movie_list.find (e=> e.id === parseInt(req.params.id))
+        if (!film) res.status(404).json ("not found")
+        res.json(film)
+
+        const index = movie_list.indexOf(film)
+        movie_list.splice(index , 1)
+        res.json(film)
+})
     
